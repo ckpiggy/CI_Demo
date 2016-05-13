@@ -24,4 +24,10 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(NSString*)reverseString:(NSString*)originalString{
+    NSString * result = nil;
+    
+    return result;
+}
+
 @end
