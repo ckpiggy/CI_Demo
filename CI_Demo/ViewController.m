@@ -25,9 +25,20 @@
 }
 
 -(NSString*)reverseString:(NSString*)originalString{
-    NSString * result = nil;
-    
+    NSString * result = @"";
+    for (NSInteger i = originalString.length - 1; i >= 0; i --) {
+        result = [result stringByAppendingString:[originalString substringWithRange:NSMakeRange(i, 1)]];
+    }
     return result;
+}
+
+-(void)reverseString:(NSString*)originalString AsyncWithCompletion:(void(^)(NSString* resultString))completion{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSString * res = [self reverseString:originalString];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completion(res);
+        });
+    });
 }
 
 @end

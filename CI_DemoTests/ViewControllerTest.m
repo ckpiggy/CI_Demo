@@ -18,6 +18,7 @@
 @interface ViewController ()
 
 -(NSString*)reverseString:(NSString*)originalString;
+-(void)reverseString:(NSString*)originalString AsyncWithCompletion:(void(^)(NSString* resultString))completion;
 
 @end
 
@@ -32,9 +33,19 @@
     NSString * originalString = @"abcd";
     NSString * reversedString = [self.vcToTest reverseString:originalString];
     NSString * expectedString = @"dcba";
-    XCTAssertEqual(reversedString, expectedString);
+    XCTAssertTrue([reversedString isEqualToString:expectedString]);
 }
 
+-(void)testAsyncReverseString{
+    NSString * original = @"abcd";
+    NSString * expectedString = @"dcba";
+    XCTestExpectation * resultCompletion = [self expectationWithDescription:@"reverse string async"];
+    [self.vcToTest reverseString:original AsyncWithCompletion:^(NSString *resultString) {
+        XCTAssertTrue([resultString isEqualToString:expectedString]);
+        [resultCompletion fulfill];
+    }];
+    [self waitForExpectationsWithTimeout:5 handler:nil];
+}
 
 - (void)tearDown {
     [super tearDown];
